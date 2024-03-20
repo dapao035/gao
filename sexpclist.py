@@ -6,7 +6,7 @@ from email.mime.text import MIMEText #邮件文本
 from email.header import Header
 two = False #切换获取页面方法True:undetected_chromedriver  Flase:request
 
-dm=[('花都影视仓','huaduys'),('综合速播仓','nv002'),('黄车一仓','hsck822'),('快播四仓','2028d'),('91PORNY仓','91porny'),('网红爆料仓','51cg1'),('欧美18禁仓','xxx18'),('caopao娱乐仓','caopao'),('花菀TV仓','kwtkyg'),('sae8资源仓','sae8'),('黄车七仓','yuexia6')]
+dm=[('花都影视仓','huaduys'),('黄车一仓','hsck822'),('快播四仓','2028d'),('91PORNY仓','91porny'),('网红爆料仓','51cg1'),('欧美18禁仓','xxx18'),('caopao娱乐仓','caopao'),('花菀TV仓','kwtkyg'),('sae8资源仓','sae8'),('黄车七仓','yuexia6')]
 url1="https://bbs.672z.org/2048/"
 url3="thread.php?fid=291&woo={}"
 path='./'
@@ -72,15 +72,15 @@ def savem3(url2,fn,dm_name,x='a'):
                 link=url1+link
             soup = BeautifulSoup(web_fw(link),"html.parser")
             wer= str(soup.body.select('script')[2])
-            wer=wer[wer.find('"src":')+8:wer.find('"type":')]
-            wer=wer[:wer.find('",')]
+            wer=wer[wer.find('"src":')+8:wer.find('.m3u8')+5]
+            #wer=wer[:wer.find('",')]
             if wer.find('http')==0:
                 pass
             else:
                 wer='https://bbs.672z.org'+wer
             link = cont+','+wer
             print(link)
-            f.write(link+'\n')
+            #f.write(link+'\n')
         except Exception as e:
             print(e)
             continue
