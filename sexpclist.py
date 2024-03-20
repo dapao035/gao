@@ -80,7 +80,7 @@ def savem3(url2,fn,dm_name,x='a'):
                 wer='https://bbs.672z.org'+wer
             link = cont+','+wer
             print(link)
-            #f.write(link+'\n')
+            f.write(link+'\n')
         except Exception as e:
             print(e)
             continue
