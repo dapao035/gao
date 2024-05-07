@@ -6,11 +6,11 @@ from email.mime.text import MIMEText #邮件文本
 from email.header import Header
 two = False #切换获取页面方法True:undetected_chromedriver  Flase:request
 #调整代码
-dm=[('花都影视仓','huaduys'),('黄车一仓','hsck822'),('快播四仓','2028d'),('91PORNY仓','91porny'),('网红爆料仓','51cg1'),('欧美18禁仓','xxx18'),('caopao娱乐仓','caopao'),('花菀TV仓','kwtkyg'),('sae8资源仓','sae8'),('黄车七仓','yuexia6')]
+dm=[('花都影视仓','huaduys'),('黄车一仓','hsck822'),('caopao娱乐仓','caopao'),('sae8资源仓','sae8'),('综合速播仓','404xav'),('黄车七仓','yuexia6'),('百视精品仓','100vod'),('纯白视频仓','chunbai'),('橙子视频仓','czsp857')]
 url1="https://bbs.672z.org/2048/"
 url3="thread.php?fid=291&woo={}"
 path='./'
-#('综合速播仓','nv002'),
+#('快播四仓','2028d'),('91PORNY仓','91porny'),('网红爆料仓','51cg1'),('欧美18禁仓','xxx18'),('花菀TV仓','kwtkyg'),
 
 def send_email(subject="chinadaily推送提醒",content="chinadaily头条，请查看",recver="xingchen035@live.com"):
     # 第三方 SMTP 服务
