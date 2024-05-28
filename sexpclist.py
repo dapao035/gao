@@ -6,7 +6,7 @@ from email.mime.text import MIMEText #邮件文本
 from email.header import Header
 two = False #切换获取页面方法True:undetected_chromedriver  Flase:request
 #调整代码
-dm=[('花都影视仓','huaduys'),('黄车一仓','hsck822'),('caopao娱乐仓','caopao'),('sae8资源仓','sae8'),('综合速播仓','404xav'),('黄车七仓','yuexia6'),('百视精品仓','100vod'),('纯白视频仓','chunbai'),('橙子视频仓','czsp857')]
+dm=[('花都影视仓','huaduys'),('黄车一仓','hsck822'),('caopao娱乐仓','caopao'),('sae8资源仓','sae8'),('综合速播仓','404xav'),('黄车七仓','yuexia6'),('百视精品仓','100vod'),('纯白视频仓','chunbai'),('橙子视频仓','czsp857'),('P影院仓','pbaiaifa'),('欧美精品','yuexia6&forum=L2luZGV4LnBocC92b2Qvc2hvdy9pZC8xNS5odG1s#c'),('日本有码','yuexia6&forum=L2luZGV4LnBocC92b2Qvc2hvdy9pZC82Lmh0bWw#c')]
 url1="https://bbs.672z.org/2048/"
 url3="thread.php?fid=291&woo={}"
 path='./'
