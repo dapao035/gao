@@ -6,7 +6,7 @@ from email.mime.text import MIMEText #邮件文本
 from email.header import Header
 two = False #切换获取页面方法True:undetected_chromedriver  Flase:request
 #调整代码
-dm=[('花都影视仓','huaduys'),('黄车一仓','hsck822'),('caopao娱乐仓','caopao'),('sae8资源仓','sae8'),('综合速播仓','404xav'),('黄车七仓','yuexia6'),('百视精品仓','100vod'),('纯白视频仓','chunbai'),('橙子视频仓','czsp857'),('P影院仓','pbaiaifa'),('欧美精品','yuexia6&forum=L2luZGV4LnBocC92b2Qvc2hvdy9pZC8xNS5odG1s#c'),('日本有码','yuexia6&forum=L2luZGV4LnBocC92b2Qvc2hvdy9pZC82Lmh0bWw#c')]
+dm=[('综合速播仓','404xav')]
 url1="https://bbs.672z.org/2048/"
 url3="thread.php?fid=291&woo={}"
 path='./'
@@ -54,36 +54,46 @@ def web_fw(url):
         #    return False
 
 def savem3(url2,fn,dm_name,x='a'):
-    soup = BeautifulSoup(web_fw(url2),"html.parser")#,from_encoding="utf-8"
-    #links = soup.find_all('div',class_='colVideoList')
-    links = soup.find_all('a',class_='text-truncate')
+    m3u=""
+    soup = BeautifulSoup(web_fw(url2),"html.parser")
+    linksall = soup.find_all('a',style='display: block;')
+    for linkall in linksall:
+        name=linkall.text
+        linkall=url1+linkall['href']
+#         print(name,linkall)
+        soup = BeautifulSoup(web_fw(linkall),"html.parser")#,from_encoding="utf-8"
+        #links = soup.find_all('div',class_='colVideoList')
+        links = soup.find_all('a',class_='text-truncate')
+        
+#         if x=='w':   
+#         f.write(name+',#genre#\n')
+        m3u+=name+',#genre#\n'
+        for link in links:
+            try:
+                cont = link['title']
+                link=url1+link['href']
+                soup = BeautifulSoup(web_fw(link),"html.parser")#,from_encoding="utf-8")
+                link = soup.iframe['src']
+                if link.find('http')==0:
+                    pass
+                else:
+                    link=url1+link
+                soup = BeautifulSoup(web_fw(link),"html.parser")
+                wer= str(soup.body.select('script')[2])
+                wer=wer[wer.find('"src":')+8:wer.find('.m3u8')+5]
+                #wer=wer[:wer.find('",')]
+                if wer.find('http')==0:
+                    pass
+                else:
+                    wer='https://bbs.672z.org'+wer
+                m3u += cont+','+wer+'\n'
+                
+            except Exception as e:
+                print(e)
+                continue
+#         print(m3u)
     f=open(fn,x, encoding='utf-8')
-    #if x=='w':   
-    f.write(dm_name+',#genre#\n')
-    for link in links:
-        try:
-            cont = link['title']
-            link=url1+link['href']
-            soup = BeautifulSoup(web_fw(link),"html.parser")#,from_encoding="utf-8")
-            link = soup.iframe['src']
-            if link.find('http')==0:
-                pass
-            else:
-                link=url1+link
-            soup = BeautifulSoup(web_fw(link),"html.parser")
-            wer= str(soup.body.select('script')[2])
-            wer=wer[wer.find('"src":')+8:wer.find('.m3u8')+5]
-            #wer=wer[:wer.find('",')]
-            if wer.find('http')==0:
-                pass
-            else:
-                wer='https://bbs.672z.org'+wer
-            link = cont+','+wer
-            print(link)
-            f.write(link+'\n')
-        except Exception as e:
-            print(e)
-            continue
+    f.write(m3u)
     f.close()
     return False
 
@@ -120,7 +130,7 @@ for dm_one in dm:
     print(dm_one[0],'ok')
     zt='a'
     
-send_email(subject="更新提示",content="更新成功")
+# send_email(subject="更新提示",content="更新成功")
 
 if two:
     browser.quit()
