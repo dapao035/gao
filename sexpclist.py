@@ -63,14 +63,14 @@ def savem3(url2,fn,dm_name,x='a'):
 #         print(name,linkall)
         soup = BeautifulSoup(web_fw(linkall),"html.parser")#,from_encoding="utf-8"
         #links = soup.find_all('div',class_='colVideoList')
-        links = soup.find_all('a',class_='text-truncate')
+        links = soup.find_all('a',class_='subject')
         
 #         if x=='w':   
 #         f.write(name+',#genre#\n')
         m3u+=name+',#genre#\n'
         for link in links:
             try:
-                cont = link['title']
+                cont = link.text
                 link=url1+link['href']
                 soup = BeautifulSoup(web_fw(link),"html.parser")#,from_encoding="utf-8")
                 link = soup.iframe['src']
@@ -91,7 +91,7 @@ def savem3(url2,fn,dm_name,x='a'):
             except Exception as e:
                 print(e)
                 continue
-#         print(m3u)
+#             print(m3u)
     f=open(fn,x, encoding='utf-8')
     f.write(m3u)
     f.close()
