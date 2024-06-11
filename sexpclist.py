@@ -54,7 +54,6 @@ def web_fw(url):
         #    return False
 
 def savem3(url2,fn,dm_name,x='a'):
-    m3u=""
     soup = BeautifulSoup(web_fw(url2),"html.parser")
     linksall = soup.find_all('a',style='display: block;')
     for linkall in linksall:
@@ -63,15 +62,17 @@ def savem3(url2,fn,dm_name,x='a'):
 #         print(name,linkall)
         soup = BeautifulSoup(web_fw(linkall),"html.parser")#,from_encoding="utf-8"
         #links = soup.find_all('div',class_='colVideoList')
-        links = soup.find_all('a',class_='subject')
+        links = soup.find_all('div',class_='colVideoList')
         
 #         if x=='w':   
 #         f.write(name+',#genre#\n')
+        m3u=""
         m3u+=name+',#genre#\n'
         for link in links:
+#             print(link.a.text,link.a['href'])
             try:
-                cont = link.text
-                link=url1+link['href']
+                cont = link.a.text
+                link=url1+link.a['href']
                 soup = BeautifulSoup(web_fw(link),"html.parser")#,from_encoding="utf-8")
                 link = soup.iframe['src']
                 if link.find('http')==0:
@@ -91,10 +92,11 @@ def savem3(url2,fn,dm_name,x='a'):
             except Exception as e:
                 print(e)
                 continue
-#             print(m3u)
-    f=open(fn,x, encoding='utf-8')
-    f.write(m3u)
-    f.close()
+#         print(m3u)
+        f=open(fn,x, encoding='utf-8')
+        f.write(m3u)
+        f.close()
+        x='a'
     return False
 
 sexname=''
