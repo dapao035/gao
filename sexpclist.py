@@ -132,7 +132,7 @@ for dm_one in dm:
     print(dm_one[0],'ok')
     zt='a'
     
-# send_email(subject="更新提示",content="更新成功")
+send_email(subject="更新提示",content="更新成功")
 
 if two:
     browser.quit()
