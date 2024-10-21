@@ -6,7 +6,7 @@ from email.mime.text import MIMEText #邮件文本
 from email.header import Header
 two = False #切换获取页面方法True:undetected_chromedriver  Flase:request
 #调整代码
-dm=[('成人娱乐','76119')]
+dm=[('纯白视频','chunbai')]
 url1="https://bbs.672z.org/2048/"
 url3="thread.php?fid=291&woo={}"
 path='./'
