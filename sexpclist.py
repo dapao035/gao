@@ -57,7 +57,7 @@ def savem3(url2,fn,dm_name,x='a'):
     soup = BeautifulSoup(web_fw(url2),"html.parser")
     linksall = soup.find_all('a',style='display: block;')
     for linkall in linksall:
-        name=linkall.text
+        name=linkall.text.strip()
         linkall=url1+linkall['href']
 #         print(name,linkall)
         soup = BeautifulSoup(web_fw(linkall),"html.parser")#,from_encoding="utf-8"
