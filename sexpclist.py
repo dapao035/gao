@@ -59,7 +59,7 @@ def savem3(url2,fn,dm_name,x='a'):
     for linkall in linksall:
         name=linkall.text.strip()
         linkall=url1+linkall['href']
-#         print(name,linkall)
+#        print(name,linkall)
         soup = BeautifulSoup(web_fw(linkall),"html.parser")#,from_encoding="utf-8"
         #links = soup.find_all('div',class_='colVideoList')
         links = soup.find_all('div',class_='colVideoList')
@@ -132,7 +132,7 @@ for dm_one in dm:
     print(dm_one[0],'ok')
     zt='a'
     
-send_email(subject="更新提示",content="更新成功")
+#send_email(subject="更新提示",content="更新成功")
 
 if two:
     browser.quit()
