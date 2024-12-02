@@ -7,7 +7,7 @@ from email.header import Header
 two = False #切换获取页面方法True:undetected_chromedriver  Flase:request
 #调整代码
 dm=[('纯白视频','chunbai')]
-url1="https://bbs.672z.org/2048/"
+url1="https://2048.cc/2048/"
 url3="thread.php?fid=291&woo={}"
 path='./'
 #('快播四仓','2028d'),('91PORNY仓','91porny'),('网红爆料仓','51cg1'),('欧美18禁仓','xxx18'),('花菀TV仓','kwtkyg'),('百视精品仓','100vod'),('成人娱乐','76119')
