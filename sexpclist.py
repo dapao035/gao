@@ -6,7 +6,7 @@ from email.mime.text import MIMEText #邮件文本
 from email.header import Header
 two = False #切换获取页面方法True:undetected_chromedriver  Flase:request
 #调整代码
-dm=[('纯白视频','chunbai')]
+dm=[('百视精品仓','100vod'),('网红爆料仓','51cg1')]
 url1="https://2048.cc/2048/"
 url3="thread.php?fid=291&woo={}"
 path='./'
