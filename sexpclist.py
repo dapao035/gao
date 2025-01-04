@@ -6,11 +6,11 @@ from email.mime.text import MIMEText #邮件文本
 from email.header import Header
 two = False #切换获取页面方法True:undetected_chromedriver  Flase:request
 #调整代码
-dm=[('百视精品仓','100vod'),('网红爆料仓','51cg1')]
+dm=[('百视精品仓','100vod')]
 url1="https://2048.cc/2048/"
 url3="thread.php?fid=291&woo={}"
 path='./'
-#('快播四仓','2028d'),('91PORNY仓','91porny'),('网红爆料仓','51cg1'),('欧美18禁仓','xxx18'),('花菀TV仓','kwtkyg'),('百视精品仓','100vod'),('成人娱乐','76119')
+#('91PORNY仓','91porny'),('网红爆料仓','51cg1'),('欧美18禁仓','xxx18'),('百视精品仓','100vod'),('成人娱乐','76119'),('P影院仓','pbaiaifa'),('纯白视频','chunbai'),('xnxx休闲','xnxx')
 
 def send_email(subject="chinadaily推送提醒",content="chinadaily头条，请查看",recver="xingchen035@live.com"):
     # 第三方 SMTP 服务
@@ -59,22 +59,24 @@ def savem3(url2,fn,dm_name,x='a'):
     for linkall in linksall:
         name=linkall.text.strip()
         linkall=url1+linkall['href']
-#        print(name,linkall)
+#        print(name,linkall)#测试用
         soup = BeautifulSoup(web_fw(linkall),"html.parser")#,from_encoding="utf-8"
-        #links = soup.find_all('div',class_='colVideoList')
+#        links = soup.find_all('div',class_='colVideoList')
         links = soup.find_all('div',class_='colVideoList')
-        
-#         if x=='w':   
-#         f.write(name+',#genre#\n')
+#        print(links)#测试用
+#        if x=='w':   
+#        f.write(name+',#genre#\n')
         m3u=""
         m3u+=name+',#genre#\n'
         for link in links:
-#             print(link.a.text,link.a['href'])
+            time.sleep(2)
+#            print("名字：",link.a[0],"链接：",link.a['href'])
             try:
-                cont = link.a.text
+#                cont = link.span.text
                 link=url1+link.a['href']
                 soup = BeautifulSoup(web_fw(link),"html.parser")#,from_encoding="utf-8")
                 link = soup.iframe['src']
+                cont = soup.h1.text
                 if link.find('http')==0:
                     pass
                 else:
@@ -88,11 +90,12 @@ def savem3(url2,fn,dm_name,x='a'):
                 else:
                     wer='https://bbs.672z.org'+wer
                 m3u += cont+','+wer+'\n'
-                
+#                print("名字：",cont,"链接：",wer)#测试用
             except Exception as e:
                 print(e)
                 continue
-#         print(m3u)
+            
+#        print(m3u)
         f=open(fn,x, encoding='utf-8')
         f.write(m3u)
         f.close()
