@@ -7,7 +7,7 @@ from email.header import Header
 two = False #切换获取页面方法True:undetected_chromedriver  Flase:request
 #调整代码
 dm=[('百视精品仓','100vod')]
-url1="https://2048.cc/2048/"
+url1="https://2048.biz/"
 url3="thread.php?fid=291&woo={}"
 path='./'
 #('91PORNY仓','91porny'),('网红爆料仓','51cg1'),('欧美18禁仓','xxx18'),('百视精品仓','100vod'),('成人娱乐','76119'),('P影院仓','pbaiaifa'),('纯白视频','chunbai'),('xnxx休闲','xnxx')
@@ -56,6 +56,7 @@ def web_fw(url):
 def savem3(url2,fn,dm_name,x='a'):
     soup = BeautifulSoup(web_fw(url2),"html.parser")
     linksall = soup.find_all('a',style='display: block;')
+#    print(soup)
     for linkall in linksall:
         name=linkall.text.strip()
         linkall=url1+linkall['href']
