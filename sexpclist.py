@@ -1,144 +1,133 @@
-# encoding: utf-8
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 import time,os
 from bs4 import BeautifulSoup
-import smtplib #smtp服务器
-from email.mime.text import MIMEText #邮件文本
-from email.header import Header
-two = False #切换获取页面方法True:undetected_chromedriver  Flase:request
-#调整代码
-dm=[('百视精品仓','100vod')]
+
+
+
 url1="https://2048.biz/"
-url3="thread.php?fid=291&woo={}"
+url3="thread.php?fid=291&woo=100vod"
 path='./'
-#('91PORNY仓','91porny'),('网红爆料仓','51cg1'),('欧美18禁仓','xxx18'),('百视精品仓','100vod'),('成人娱乐','76119'),('P影院仓','pbaiaifa'),('纯白视频','chunbai'),('xnxx休闲','xnxx')
 
-def send_email(subject="chinadaily推送提醒",content="chinadaily头条，请查看",recver="xingchen035@live.com"):
-    # 第三方 SMTP 服务
-    mail_host="smtp.office365.com"  #设置服务器
-    mail_user="xingchen035@live.com"    #用户名
-    mail_pass="97JUAN1011xc"   #口令 
-    sender = 'xingchen035@live.com'
-    receivers = recver # 接收邮件，可设置为你的QQ邮箱或者其他邮箱
-    message = MIMEText(content, 'plain', 'utf-8')
-    message['Subject'] = Header(subject, 'utf-8')
-    smtpObj = smtplib.SMTP(mail_host,port=587) 
-    smtpObj.connect(mail_host,port=587)    # 25 为 SMTP 端口号
-    # 必须先登录
-    smtpObj.ehlo() # 用户认证 
-    smtpObj.starttls() # 明文通信协议的扩展，能够让明文的通信连线直接成为加密连线（使用SSL或TLS加密），而不需要使用另一个特别的端口来进行加密通信，属于机会性加密
-    smtpObj.login(mail_user,mail_pass)  
-    smtpObj.sendmail(sender, receivers, message.as_string())
-    print('邮件发送成功')
+# 配置浏览器（Chrome）
+options = webdriver.ChromeOptions()
+# 可选：无头模式（后台运行，无需打开浏览器界面）
+options.add_argument('--headless')
+# 创建驱动并指定路径和选项
+driver = webdriver.Chrome(
+    service=Service(ChromeDriverManager().install()),
+    options=options
+)
+zt='w'
+count=0
 
-def web_fw(url):
-    if two:
-        global onetime   
-        try:
-            browser.get(url)
-            if onetime:
-                time.sleep(30)
-                onetime = False
-            html=browser.page_source
-            return html
-        except Exception as e:
-            print(e)
-    #browser.quit()
-    else:
-        headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.39'}
-        #try:
-        html = request.Request(url=url,headers=headers)
-        res = request.urlopen(url=html,timeout=30)
-        return res
-        #except Exception as e:
-        #    print(e)
-        #    return False
+def get_source(url):
+    driver.get(url)
+    html_source=driver.page_source
+    soup = BeautifulSoup(html_source,"html.parser")#,from_encoding="utf-8"
+    return soup
 
-def savem3(url2,fn,dm_name,x='a'):
-    soup = BeautifulSoup(web_fw(url2),"html.parser")
-    linksall = soup.find_all('a',style='display: block;')
-#    print(soup)
-    for linkall in linksall:
-        name=linkall.text.strip()
-        linkall=url1+linkall['href']
-#        print(name,linkall)#测试用
-        soup = BeautifulSoup(web_fw(linkall),"html.parser")#,from_encoding="utf-8"
+
+
+def savem3(url2,fn,x='a'):
+#     driver.get(url2)
+#     html=driver.page_source
+#     soup = BeautifulSoup(html,"html.parser")#,from_encoding="utf-8"
 #        links = soup.find_all('div',class_='colVideoList')
-        links = soup.find_all('div',class_='colVideoList')
+    soup = get_source(url2)
+    links = soup.find_all('div',class_='colVideoList')
 #        print(links)#测试用
 #        if x=='w':   
 #        f.write(name+',#genre#\n')
-        m3u=""
-        m3u+=name+',#genre#\n'
-        for link in links:
-            time.sleep(2)
-#            print("名字：",link.a[0],"链接：",link.a['href'])
-            try:
-#                cont = link.span.text
-                link=url1+link.a['href']
-                soup = BeautifulSoup(web_fw(link),"html.parser")#,from_encoding="utf-8")
-                link = soup.iframe['src']
-                cont = soup.h1.text
-                if link.find('http')==0:
-                    pass
-                else:
-                    link=url1+link
-                soup = BeautifulSoup(web_fw(link),"html.parser")
-                wer= str(soup.body.select('script')[2])
-                wer=wer[wer.find('"src":')+8:wer.find('.m3u8')+5]
-                #wer=wer[:wer.find('",')]
-                if wer.find('http')==0:
-                    pass
-                else:
-                    wer='https://bbs.672z.org'+wer
-                m3u += cont+','+wer+'\n'
-#                print("名字：",cont,"链接：",wer)#测试用
-            except Exception as e:
-                print(e)
-                continue
-            
-#        print(m3u)
-        f=open(fn,x, encoding='utf-8')
-        f.write(m3u)
-        f.close()
-        x='a'
-    return False
+    m3u=""
+    m3u+=name+',#genre#\n'
+    for link in links:
+        time.sleep(2)
+#           print("名字：",link.a[0],"链接：",link.a['href'])
+        try:
+            cont = link.span.text
+            link=url1+link.a['href']
+#             driver.get(link)
+#             html=driver.page_source
+#             soup = BeautifulSoup(html,"html.parser")#,from_encoding="utf-8")
+            soup = get_source(link)
+            link = soup.iframe['src']
+            cont = soup.h1.text
+            if link.find('http')==0:
+                pass
+            else:
+                link=url1+link
+#             driver.get(link)
+#             html=driver.page_source
+#             soup = BeautifulSoup(html,"html.parser")
+            soup = get_source(link)
+            wer= str(soup.body.select('script')[2])
+            wer=wer[wer.find('"src":')+8:wer.find('.m3u8')+5]
+            if wer.find('http')==0:
+                pass
 
-sexname=''
-if two:
-    import undetected_chromedriver as uc
-    chrome_options = uc.ChromeOptions()
-    chrome_options.add_argument('–headless')
-    chrome_options.add_argument("--disable-extensions")
-    chrome_options.add_argument("--disable-popup-blocking")
-    chrome_options.add_argument("--profile-directory=Default")
-    chrome_options.add_argument("--ignore-certificate-errors")
-    chrome_options.add_argument("--disable-plugins-discovery")
-    chrome_options.add_argument("--incognito")
-    chrome_options.add_argument('--no-first-run')
-    chrome_options.add_argument('--no-service-autorun')
-    chrome_options.add_argument('--no-default-browser-check')
-    chrome_options.add_argument('--password-store=basic')
-    chrome_options.add_argument('--no-sandbox')
-    browser = uc.Chrome(options=chrome_options, version_main=113)
-    browser.delete_all_cookies()
-    onetime = True
-else:
-    from urllib import request
-    
+            else:
+                wer=url1+wer
+            m3u += cont+','+wer+'\n'
+#             print("名字：",cont,"链接：",wer)#测试用
+        except Exception as e:
+            print(e)
+            continue
+    print(m3u)    
+    f=open(fn,x, encoding='utf-8')
+    f.write(m3u)
+    f.close()
 
-l=os.listdir(path)
-zt='w'
-for dm_one in dm:
+
+
+
+
+# 打开目标网页
+driver.get(url1+url3)
+
+try:
+    # 等待按钮可见（最长 10 秒）
+    button = WebDriverWait(driver, 10).until(
+        EC.visibility_of_element_located(
+            (By.XPATH, "//p[@class='enter-btn'][1]")  # 定位第一个按钮
+        )
+    )
+    # 点击按钮
+    button.click()
+    print("按钮点击成功！")
+    # 继续其他操作（如输入账号密码或跳转页面）
     filename = 'sexlist.txt'
-    url=url1+url3.format(dm_one[1])
-    print(dm_one[0],'going......')
-    savem3(url,path+filename,dm_one[0],zt)
-    print(dm_one[0],'ok')
-    zt='a'
-    
-#send_email(subject="更新提示",content="更新成功")
+    time.sleep(5)
+    html_source = driver.page_source
+    soup = BeautifulSoup(html_source,"html.parser")
+    linksall = soup.find_all('a',style='display: block;')
+    for linkall in linksall:
+        name=linkall.text.strip()
+        linkall=url1+linkall['href']
+        if count==0:
+            zt="w"
+        else:
+            zt="a"
+        savem3(linkall,path+filename,zt)
+        count+=1
+except Exception as e:
+    print(f"点击失败或元素未找到: {e}")
+finally:
+    # 关闭浏览器
+    driver.quit()
+    pass  # 注释掉 quit() 可保持浏览器页面打开以便观察结果
 
-if two:
-    browser.quit()
+# 如需继续操作（如填写信息或点击其他按钮），在此添加代码
 
+
+#headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.39'}
+#        try:
+#html = request.Request(url=url1,headers=headers)
+#res = request.urlopen(url=html,timeout=30)
+#soup = BeautifulSoup(res,"html.parser")
+#print(soup)
 
